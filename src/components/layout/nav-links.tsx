@@ -54,7 +54,7 @@ const NavLinks = () => {
           variant="ghost"
           size="icon"
           onClick={() => setIsOpen(true)}
-          className="relative z-60 md:hidden"
+          className="relative z-45 md:hidden"
         >
           <IconMenu2 className="size-5" />
         </Button>
