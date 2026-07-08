@@ -2,8 +2,12 @@
 
 import { db } from "@/db/drizzle";
 import { categories } from "@/db/schema";
-import { CategoryData, categorySchema } from "@/validations/menu";
-import { desc, ilike } from "drizzle-orm";
+import {
+  CategoryData,
+  categorySchema,
+  UpdateCategoryData,
+} from "@/validations/menu";
+import { desc, eq, ilike } from "drizzle-orm";
 
 const generateSlugs = (text: string): string => {
   return (
@@ -19,8 +23,11 @@ const generateSlugs = (text: string): string => {
 
 export const createCategory = async (data: CategoryData) => {
   const parsed = categorySchema.safeParse(data);
-
-  if (!parsed.success) throw new Error(parsed.error.message);
+  if (!parsed.success)
+    return {
+      success: false,
+      error: parsed.error.message,
+    };
 
   const category = parsed.data;
 
@@ -58,6 +65,62 @@ export const createCategory = async (data: CategoryData) => {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Failed to create category";
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
+
+export const updateCategory = async (data: UpdateCategoryData, id: number) => {
+  const parsed = categorySchema.safeParse(data);
+  if (!parsed.success)
+    return {
+      success: false,
+      error: parsed.error.message,
+    };
+  const category = parsed.data;
+
+  const [requiredCategory] = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.id, id));
+
+  if (!requiredCategory)
+    return {
+      success: false,
+      error: "Required category was not found.",
+    };
+
+  try {
+    const [existingCategory] = await db
+      .select({ id: categories.id })
+      .from(categories)
+      .where(ilike(categories.name, category.name.trim()))
+      .limit(1);
+
+    if (existingCategory) {
+      return {
+        success: false,
+        error: "A category with this name already exists.",
+      };
+    }
+
+    const slug = generateSlugs(category.name);
+
+    await db
+      .update(categories)
+      .set({
+        name: category.name,
+        slug,
+      })
+      .where(eq(categories.id, id));
+
+    return { success: true, message: "Category updated successfully" };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to update category";
 
     return {
       success: false,

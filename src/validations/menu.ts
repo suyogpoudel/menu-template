@@ -8,3 +8,7 @@ export const categorySchema = z.object({
 });
 
 export type CategoryData = z.infer<typeof categorySchema>;
+
+export const updateCategorySchema = categorySchema.partial();
+
+export type UpdateCategoryData = z.infer<typeof updateCategorySchema>;
