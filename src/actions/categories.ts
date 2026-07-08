@@ -6,8 +6,9 @@ import {
   CategoryData,
   categorySchema,
   UpdateCategoryData,
+  updateCategorySchema,
 } from "@/validations/menu";
-import { desc, eq, ilike } from "drizzle-orm";
+import { and, desc, eq, ilike, ne } from "drizzle-orm";
 
 const generateSlugs = (text: string): string => {
   return (
@@ -74,12 +75,21 @@ export const createCategory = async (data: CategoryData) => {
 };
 
 export const updateCategory = async (data: UpdateCategoryData, id: number) => {
-  const parsed = categorySchema.safeParse(data);
+  const parsed = updateCategorySchema.safeParse(data);
   if (!parsed.success)
     return {
       success: false,
       error: parsed.error.message,
     };
+
+  const categoryName = (parsed.data.name ?? "").trim();
+  if (!categoryName) {
+    return {
+      success: false,
+      error: "Category name is required.",
+    };
+  }
+
   const category = parsed.data;
 
   const [requiredCategory] = await db
@@ -97,7 +107,7 @@ export const updateCategory = async (data: UpdateCategoryData, id: number) => {
     const [existingCategory] = await db
       .select({ id: categories.id })
       .from(categories)
-      .where(ilike(categories.name, category.name.trim()))
+      .where(and(ilike(categories.name, categoryName), ne(categories.id, id)))
       .limit(1);
 
     if (existingCategory) {
@@ -107,12 +117,12 @@ export const updateCategory = async (data: UpdateCategoryData, id: number) => {
       };
     }
 
-    const slug = generateSlugs(category.name);
+    const slug = generateSlugs(categoryName);
 
     await db
       .update(categories)
       .set({
-        name: category.name,
+        name: categoryName,
         slug,
       })
       .where(eq(categories.id, id));
