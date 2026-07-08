@@ -8,7 +8,7 @@ import {
   UpdateCategoryData,
   updateCategorySchema,
 } from "@/validations/menu";
-import { and, desc, eq, ilike, ne } from "drizzle-orm";
+import { and, asc, desc, eq, gt, ilike, lt, ne } from "drizzle-orm";
 
 const generateSlugs = (text: string): string => {
   return (
@@ -90,8 +90,6 @@ export const updateCategory = async (data: UpdateCategoryData, id: number) => {
     };
   }
 
-  const category = parsed.data;
-
   const [requiredCategory] = await db
     .select()
     .from(categories)
@@ -131,6 +129,63 @@ export const updateCategory = async (data: UpdateCategoryData, id: number) => {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Failed to update category";
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
+
+export const reorderCategory = async (id: number, direction: "up" | "down") => {
+  try {
+    const [currentCategory] = await db
+      .select({ id: categories.id, order: categories.order })
+      .from(categories)
+      .where(eq(categories.id, id))
+      .limit(1);
+
+    if (!currentCategory) {
+      return { success: false, error: "Category not found." };
+    }
+
+    const currentOrder = currentCategory.order;
+
+    const swapQuery = db
+      .select({ id: categories.id, order: categories.order })
+      .from(categories);
+
+    if (direction === "up") {
+      swapQuery
+        .where(lt(categories.order, currentOrder))
+        .orderBy(desc(categories.order));
+    } else {
+      swapQuery
+        .where(gt(categories.order, currentOrder))
+        .orderBy(asc(categories.order));
+    }
+
+    const [neighborCategory] = await swapQuery.limit(1);
+
+    if (!neighborCategory) {
+      return { success: true, message: "Already at the ordering limit." };
+    }
+
+    await db.transaction(async (tx) => {
+      await tx
+        .update(categories)
+        .set({ order: neighborCategory.order })
+        .where(eq(categories.id, currentCategory.id));
+      await tx
+        .update(categories)
+        .set({ order: currentOrder })
+        .where(eq(categories.id, neighborCategory.id));
+    });
+
+    return { success: true, message: "Order updated successfully." };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to change order";
 
     return {
       success: false,
