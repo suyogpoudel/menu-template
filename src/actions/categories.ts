@@ -193,3 +193,30 @@ export const reorderCategory = async (id: number, direction: "up" | "down") => {
     };
   }
 };
+
+export const deleteCategory = async (id: number) => {
+  const [requiredCategory] = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.id, id));
+
+  if (!requiredCategory)
+    return {
+      success: false,
+      error: "Category not found",
+    };
+
+  try {
+    await db.delete(categories).where(eq(categories.id, id));
+
+    return { success: true, message: "Category deleted successfully." };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to delete category";
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
