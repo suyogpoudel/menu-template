@@ -5,6 +5,7 @@ import {
   integer,
   numeric,
   timestamp,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -29,6 +30,7 @@ export const menuItems = pgTable("menu_items", {
   categoryId: integer("category_id")
     .notNull()
     .references(() => categories.id, { onDelete: "cascade" }),
+  isAvailable: boolean("is_available").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
