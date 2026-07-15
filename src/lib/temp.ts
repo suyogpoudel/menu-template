@@ -16,8 +16,7 @@ export const MENU_ITEMS = [
     categoryId: 1,
     image:
       "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Classic minced seasonal vegetable dumplings served with spicy tomato achar.",
+    isAvailable: true,
   },
   {
     id: 2,
@@ -27,8 +26,7 @@ export const MENU_ITEMS = [
     categoryId: 1,
     image:
       "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Juicy minced chicken dumplings flavored with traditional spices.",
+    isAvailable: true,
   },
   {
     id: 3,
@@ -38,8 +36,7 @@ export const MENU_ITEMS = [
     categoryId: 1,
     image:
       "https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Deep-fried buff momos with a perfectly crispy exterior wrapper.",
+    isAvailable: true,
   },
   {
     id: 4,
@@ -49,8 +46,7 @@ export const MENU_ITEMS = [
     categoryId: 1,
     image:
       "https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Fried veg momos tossed with onions, bell peppers, and a fiery hot chili sauce.",
+    isAvailable: true,
   },
   {
     id: 5,
@@ -60,8 +56,7 @@ export const MENU_ITEMS = [
     categoryId: 1,
     image:
       "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Steamed chicken momos drowned in a rich, tangy sesame and tomato broth.",
+    isAvailable: false, // Out of stock for testing
   },
 
   // --- Category 2: Pizzas ---
@@ -73,8 +68,7 @@ export const MENU_ITEMS = [
     categoryId: 2,
     image:
       "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Simple perfection with fresh tomato sauce, gooey mozzarella cheese, and fresh basil leaves.",
+    isAvailable: true,
   },
   {
     id: 7,
@@ -84,8 +78,7 @@ export const MENU_ITEMS = [
     categoryId: 2,
     image:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Topped with shredded spicy chicken, jalapenos, onions, and extra stringy cheese.",
+    isAvailable: true,
   },
 
   // --- Category 3: Appetizers & Snacks ---
@@ -97,8 +90,7 @@ export const MENU_ITEMS = [
     categoryId: 3,
     image:
       "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Crispy golden potato fingers tossed with salt and a touch of local spices.",
+    isAvailable: true,
   },
   {
     id: 9,
@@ -108,8 +100,7 @@ export const MENU_ITEMS = [
     categoryId: 3,
     image:
       "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Six pieces of juicy chicken wings fried and coated in sweet and tangy BBQ sauce.",
+    isAvailable: true,
   },
 
   // --- Category 4: Cold Beverages ---
@@ -121,7 +112,7 @@ export const MENU_ITEMS = [
     categoryId: 4,
     image:
       "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80",
-    description: "250ml refreshing chilled soda bottle.",
+    isAvailable: true,
   },
   {
     id: 11,
@@ -131,8 +122,7 @@ export const MENU_ITEMS = [
     categoryId: 4,
     image:
       "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80",
-    description:
-      "Zesty combination of fresh lime juice, crushed mint, syrup, and bubbly soda.",
+    isAvailable: true,
   },
 
   // --- Category 5: Hard Drinks ---
@@ -144,7 +134,7 @@ export const MENU_ITEMS = [
     categoryId: 5,
     image:
       "https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=600&q=80",
-    description: "650ml chilled local premium Nepalese lager brew.",
+    isAvailable: true,
   },
   {
     id: 13,
@@ -154,6 +144,6 @@ export const MENU_ITEMS = [
     categoryId: 5,
     image:
       "https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=600&q=80",
-    description: "650ml smooth and crispy strong premium beer selection.",
+    isAvailable: false, // Out of stock for testing
   },
 ];

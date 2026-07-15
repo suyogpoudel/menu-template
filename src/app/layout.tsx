@@ -3,6 +3,7 @@ import { Geist_Mono, Manrope, EB_Garamond, Anton } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/layout/navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const ebGaramondHeading = EB_Garamond({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
+        <Toaster />
       </body>
     </html>
   );
